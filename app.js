@@ -1,6 +1,9 @@
-const express = require('express')
-const client = require('./src/web/client')
-const app = express()
+const express = require('express');
+const expressWs = require('express-ws');
+const client = require('./src/web/client');
+
+const app = express();
+const ws = expressWs(app);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -13,11 +16,20 @@ app.all('*', (req, res, next) => {
     next();
 });
 
+app.ws('/ws', (ws, req) => {
+
+    ws.send('AiJiangnan');
+
+    ws.on('message', (msg) => {
+        console.log(msg);
+    });
+    console.log('socket', req.testing);
+});
+
 app.use('/client', client);
 app.use((err, req, res, next) => {
     console.error('global error handler:', err.stack);
     res.json({ status: -1, msg: err.message });
 })
 
-console.log('http://localhost:8888');
-app.listen(8888);
+app.listen(8888, () => console.log('http://localhost:8888'));
