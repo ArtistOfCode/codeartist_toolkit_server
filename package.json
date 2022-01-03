@@ -1,0 +1,15 @@
+{
+  "name": "toolkit_server",
+  "version": "1.0.0",
+  "description": "码匠开发工具集服务端",
+  "main": "app.js",
+  "author": "AiJiangnan",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "mysql": "^2.18.1"
+  }
+}
