@@ -29,16 +29,15 @@ router.get('/stream', (req, res) => {
     });
 
     res.write(': ping\n\n')
-    CMD.execStream(cmd)
-        .then(data => {
-            res.write('data: ' + data + '\n')
-            res.write('\n\n')
-        })
-        .finally(() => {
-            res.write('event: close\n')
-            res.write('\n\n')
-            res.end()
-        })
+    CMD.execStream(cmd, data => {
+        console.log(data)
+        res.write('data: ' + data + '\n')
+        res.write('\n\n')
+    }, () => {
+        res.write('event: close\n')
+        res.write('\n\n')
+        res.end()
+    })
 })
 
 module.exports = router;

@@ -15,11 +15,11 @@ const CMD = {
             })
         })
     },
-    execStream: (command) => {
-        return new Promise((resolve, reject) => {
-            const { stdout } = exec(command, { encoding: "utf8" });
-            stdout.on('data', (data) => resolve(data))
-        })
+    execStream: (command, cb, end, encoding) => {
+        const { stdout } = exec(command, { encoding: "binary" });
+        stdout.on('data', (data) => cb(decode(data, encoding).replace(/\r\n/g, '')))
+        stdout.on('end', end)
+        stdout.on('error', end)
     }
 }
 
