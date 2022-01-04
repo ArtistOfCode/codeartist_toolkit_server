@@ -1,10 +1,12 @@
 const express = require('express');
 const expressWs = require('express-ws');
-const client = require('./src/web/client');
+const cmd = require('./src/web/cmd');
+const mysql = require('./src/web/mysql');
 
 const app = express();
-const ws = expressWs(app);
+expressWs(app);
 
+// RequestBody
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -16,6 +18,7 @@ app.all('*', (req, res, next) => {
     next();
 });
 
+// WebSocket
 app.ws('/ws', (ws, req) => {
 
     ws.send('AiJiangnan');
@@ -26,7 +29,11 @@ app.ws('/ws', (ws, req) => {
     console.log('socket', req.testing);
 });
 
-app.use('/client', client);
+// API module
+app.use('/client', mysql);
+app.use('/cmd', cmd);
+
+// Error handler
 app.use((err, req, res, next) => {
     console.error('global error handler:', err.stack);
     res.json({ status: -1, msg: err.message });
