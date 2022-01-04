@@ -17,7 +17,7 @@ const CMD = {
     },
     execStream: (command, cb, end, encoding) => {
         const { stdout } = exec(command, { encoding: "binary" });
-        stdout.on('data', (data) => cb(decode(data, encoding).replace(/\r\n/g, '')))
+        stdout.on('data', (data) => cb(decode(data, encoding)))
         stdout.on('end', end)
         stdout.on('error', end)
     }
