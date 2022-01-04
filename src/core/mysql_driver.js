@@ -30,7 +30,7 @@ const MySQL = {
                     reject(error);
                     return;
                 };
-                reslove(results);
+                reslove({ fields, data: results });
             });
         })
     }

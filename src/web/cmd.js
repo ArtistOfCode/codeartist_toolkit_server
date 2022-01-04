@@ -30,7 +30,6 @@ router.get('/stream', (req, res) => {
 
     res.write(': ping\n\n')
     CMD.execStream(cmd, data => {
-        console.log(data)
         res.write('data: ' + data + '\n')
         res.write('\n\n')
     }, () => {
