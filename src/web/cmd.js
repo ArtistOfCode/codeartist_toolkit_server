@@ -1,5 +1,6 @@
 const express = require('express');
 const CMD = require('../core/cmd_driver');
+const EXE = require('../core/exe_driver');
 const response = require('./response');
 
 const router = express.Router();
@@ -11,6 +12,18 @@ router.get('/', (req, res) => {
         return;
     }
     CMD.exec(cmd)
+        .then(stdout => res.json(response.ok(stdout)))
+        .catch(err => res.json(response.error('命令执行失败', err)))
+})
+
+router.post('/exe', (req, res) => {
+    const { exe, args } = req.body;
+    if (!exe) {
+        res.json(response.badRequest('程序不能为空'));
+        return;
+    }
+
+    EXE[exe](args)
         .then(stdout => res.json(response.ok(stdout)))
         .catch(err => res.json(response.error('命令执行失败', err)))
 })

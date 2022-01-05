@@ -5,12 +5,20 @@
   "main": "app.js",
   "author": "AiJiangnan",
   "scripts": {
-    "test": "node app.js"
+    "start": "node app.js",
+    "build": "pkg package.json"
   },
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.2",
     "express-ws": "^5.0.2",
     "mysql": "^2.18.1"
+  },
+  "bin": "app.js",
+  "pkg": {
+    "targets": [
+      "node14.18.1-win-x64"
+    ],
+    "outputPath": "build"
   }
 }

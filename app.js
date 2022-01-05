@@ -39,4 +39,4 @@ app.use((err, req, res, next) => {
     res.json({ status: -1, msg: err.message });
 })
 
-app.listen(8888, () => console.log('http://localhost:8888'));
+app.listen(8888, () => console.log('码匠工具集服务端启动成功！\nURL: http://localhost:8888'));

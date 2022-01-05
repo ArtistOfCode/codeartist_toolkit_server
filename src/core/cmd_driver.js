@@ -1,4 +1,4 @@
-const { exec, spawn } = require('child_process');
+const { exec } = require('child_process');
 var iconv = require('iconv-lite');
 
 const decode = (res, encoding) => iconv.decode(Buffer.from(res, "binary"), encoding || 'GBK');
