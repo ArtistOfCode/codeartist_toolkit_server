@@ -2,6 +2,7 @@ const express = require('express');
 const expressWs = require('express-ws');
 const cmd = require('./src/web/cmd');
 const mysql = require('./src/web/mysql');
+const pdf = require('./src/web/pdf');
 
 const app = express();
 expressWs(app);
@@ -32,6 +33,7 @@ app.ws('/ws', (ws, req) => {
 // API module
 app.use('/client', mysql);
 app.use('/cmd', cmd);
+app.use('/pdf', pdf);
 
 // Error handler
 app.use((err, req, res, next) => {

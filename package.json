@@ -12,6 +12,7 @@
   "dependencies": {
     "express": "^4.17.2",
     "express-ws": "^5.0.2",
+    "multer": "^1.4.4",
     "mysql": "^2.18.1"
   },
   "bin": "app.js",
