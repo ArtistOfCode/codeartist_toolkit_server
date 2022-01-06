@@ -5,6 +5,7 @@ const decode = (res, encoding) => iconv.decode(Buffer.from(res, "binary"), encod
 
 const CMD = {
     exec: (command) => {
+        console.debug('CMD:', command)
         return new Promise((resolve, reject) => {
             exec(command, { encoding: "binary" }, (error, stdout, stderr) => {
                 if (error || stderr) {

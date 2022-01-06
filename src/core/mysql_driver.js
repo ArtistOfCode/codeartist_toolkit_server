@@ -20,6 +20,7 @@ const MySQL = {
         if (this.client) await this.client.end();
     },
     query: (sql) => {
+        console.debug('SQL:', sql)
         return new Promise((reslove, reject) => {
             if (!this.client) {
                 reject(new Error('数据库连接为空'));
