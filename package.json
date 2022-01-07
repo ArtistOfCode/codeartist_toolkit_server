@@ -5,7 +5,8 @@
   "main": "app.js",
   "author": "AiJiangnan",
   "scripts": {
-    "start": "tsc -w",
+    "tsc": "tsc -w",
+    "start": "node ./build/app.js",
     "build": "./node_modules/.bin/webpack",
     "win:pkg": "pkg --targets=node14.18.1-win-x64 ./build/app.js --output ./build/win/toolkit_server.exe"
   },
