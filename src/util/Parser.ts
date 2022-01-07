@@ -1,5 +1,5 @@
 class Parser {
-    static ini(props, split) {
+    public static ini(props: string, split: string): any {
         if (!props) return;
         let res = {}
         const rows = props.split('\r\n');

@@ -1,37 +1,37 @@
 import * as express from 'express';
 import CMD from '../core/cmd_driver';
 import EXE from '../core/exe_driver';
-import response from './response';
+import Response from './response';
 
 const router = express.Router();
 
 router.get('/', (req, res) => {
     const { cmd } = req.query;
     if (!cmd) {
-        res.json(response.badRequest('命令不能为空'));
+        res.json(Response.badRequest('命令不能为空'));
         return;
     }
-    CMD.exec(cmd)
-        .then(stdout => res.json(response.ok(stdout)))
-        .catch(err => res.json(response.error('命令执行失败', err)))
+    CMD.exec(<string>cmd)
+        .then(stdout => res.json(Response.ok(stdout)))
+        .catch(err => res.json(Response.error('命令执行失败', err)))
 })
 
 router.post('/exe', (req, res) => {
     const { exe, args } = req.body;
     if (!exe) {
-        res.json(response.badRequest('程序不能为空'));
+        res.json(Response.badRequest('程序不能为空'));
         return;
     }
 
     EXE[exe](args)
-        .then(stdout => res.json(response.ok(stdout)))
-        .catch(err => res.json(response.error('命令执行失败', err)))
+        .then(stdout => res.json(Response.ok(stdout)))
+        .catch(err => res.json(Response.error('命令执行失败', err)))
 })
 
 router.get('/stream', (req, res) => {
     const { cmd } = req.query;
     if (!cmd) {
-        res.json(response.badRequest('命令不能为空'));
+        res.json(Response.badRequest('命令不能为空'));
         return;
     }
 
@@ -42,7 +42,7 @@ router.get('/stream', (req, res) => {
     });
 
     res.write(': ping\n\n')
-    CMD.execStream(cmd, data => {
+    CMD.execStream(<string>cmd, data => {
         res.write('data: ' + data + '\n')
         res.write('\n\n')
     }, () => {

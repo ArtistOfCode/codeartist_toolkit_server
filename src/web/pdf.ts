@@ -2,7 +2,7 @@ import { Router } from 'express';
 import * as multer from 'multer';
 import EXE from '../core/exe_driver';
 import { join } from 'path';
-import response from './response';
+import Response from './response';
 import Parser from '../util/Parser';
 
 const dest = join(process.cwd(), '/tmp');
@@ -11,7 +11,7 @@ const upload = multer({ dest });
 
 router.post('/', upload.single('file'), (req, res) => {
     if (!req.file) {
-        res.json(response.badRequest('文件不能为空'))
+        res.json(Response.badRequest('文件不能为空'))
         return;
     }
     const { filename, size } = req.file;
@@ -20,15 +20,15 @@ router.post('/', upload.single('file'), (req, res) => {
     EXE.pdf(`${pdf} dump_data`)
         .then(data => {
             const result = Parser.ini(data, ': ')
-            res.json(response.ok({ filename, size, pdf: result }))
+            res.json(Response.ok({ filename, size, pdf: result }))
         })
-        .catch(err => res.json(response.error(err)))
+        .catch(err => res.json(Response.error(err)))
 })
 
 router.post('/merge', (req, res) => {
     const { filename, pdfs } = req.body;
     if (!pdfs || pdfs.length < 2) {
-        res.json(response.badRequest('文件数量异常'));
+        res.json(Response.badRequest('文件数量异常'));
     }
 
     const args = pdfs.map(pdf => join(dest, pdf)).join(' ')
@@ -43,7 +43,7 @@ router.post('/merge', (req, res) => {
             //     // }
             // })
         })
-        .catch(err => res.json(response.error('PDF合并异常', err)))
+        .catch(err => res.json(Response.error('PDF合并异常', err)))
 })
 
 export default router;

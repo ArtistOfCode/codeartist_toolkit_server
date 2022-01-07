@@ -1,25 +1,28 @@
 import * as express from 'express';
 import MySQL from '../core/mysql_driver';
-import response from './response';
+import Response from './response';
 
-const mysql = express.Router();
+const router = express.Router();
 
-// mysql.post('/mysql/query', (req, res, next) => {
-//     MySQL.query(req.body.sql)
-//         .then(result => res.json(response.ok(result)))
-//         .catch(err => res.json(response.error('查询异常', err)));
-// });
+let mysql: MySQL = null;
 
-// mysql.post('/mysql', (req, res, next) => {
-//     MySQL.connection(req.body)
-//         .then(() => res.json(response.ok()))
-//         .catch(next);
-// });
+router.post('/mysql/query', (req, res, next) => {
+    mysql.query(req.body.sql as string)
+        .then(result => res.json(Response.ok(result)))
+        .catch(err => res.json(Response.error('查询异常', err)));
+});
 
-// mysql.delete('/mysql', (req, res, next) => {
-//     MySQL.end()
-//         .then(() => res.json(response.ok()))
-//         .catch(next);
-// });
+router.post('/mysql', (req, res, next) => {
+    mysql = new MySQL();
+    mysql.connection(req.body)
+        .then(() => res.json(Response.ok()))
+        .catch(next);
+});
 
-export default mysql;
+router.delete('/mysql', (req, res, next) => {
+    mysql.end()
+        .then(() => res.json(Response.ok()))
+        .catch(next);
+});
+
+export default router;

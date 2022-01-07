@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as expressWs from 'express-ws';
 import cmd from './web/cmd';
-import mysql from './web/mysql';
+import router from './web/mysql';
 import pdf from './web/pdf';
 
 const appBase = express();
@@ -30,12 +30,12 @@ app.ws('/ws', (ws, req) => {
 });
 
 // API module
-app.use('/client', mysql);
+app.use('/client', router);
 app.use('/cmd', cmd);
 app.use('/pdf', pdf);
 
 // Error handler
-app.use((err, req, res, next) => {
+app.use((err: any, req: any, res: any, next: any) => {
     console.error('global error handler:', err.stack);
     res.json({ status: -1, msg: err.message });
 })

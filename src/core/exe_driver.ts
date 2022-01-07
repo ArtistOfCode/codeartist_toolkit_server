@@ -1,15 +1,17 @@
 import * as path from 'path';
-const CMD = require('./cmd_driver');
+import CMD from './cmd_driver';
 
-const app = {
-    pdf: 'lib/pdf/pdftk.exe'
+enum App {
+    PDF = 'lib/pdf/pdftk.exe'
 }
 
-const execute = (exe, args) => CMD.exec(path.join(process.cwd(), exe) + (args ? (' ' + args) : ''))
+function execute(app: App, args: string): Promise<string> {
+    return CMD.exec(path.join(process.cwd(), app) + (args ? (' ' + args) : ''));
+}
 
 class EXE {
-    static pdf(args) {
-        return execute(app.pdf, args)
+    public static pdf(args: string) {
+        return execute(App.PDF, args)
     }
 }
 
