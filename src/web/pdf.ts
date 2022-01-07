@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import * as multer from 'multer';
-import EXE from '../core/exe_driver';
-import { join } from 'path';
+import * as path from 'path';
 import Response from './response';
 import Parser from '../util/Parser';
+import EXE from '../core/exe_driver';
 
-const dest = join(process.cwd(), '/tmp');
+const dest = path.join(process.cwd(), '/tmp');
 const router = Router();
 const upload = multer({ dest });
 
@@ -15,7 +15,7 @@ router.post('/', upload.single('file'), (req, res) => {
         return;
     }
     const { filename, size } = req.file;
-    const pdf = join(dest, filename)
+    const pdf = path.join(dest, filename)
 
     EXE.pdf(`${pdf} dump_data`)
         .then(data => {
@@ -31,8 +31,8 @@ router.post('/merge', (req, res) => {
         res.json(Response.badRequest('文件数量异常'));
     }
 
-    const args = pdfs.map(pdf => join(dest, pdf)).join(' ')
-    const mergeFilename = join(dest, (filename || Date.now()) + '.pdf')
+    const args = pdfs.map((pdf: string) => path.join(dest, pdf)).join(' ')
+    const mergeFilename = path.join(dest, (filename || Date.now()) + '.pdf')
 
     EXE.pdf(`${args} output ${mergeFilename}`)
         .then(data => {

@@ -24,8 +24,8 @@ router.post('/exe', (req, res) => {
     }
 
     EXE[exe](args)
-        .then(stdout => res.json(Response.ok(stdout)))
-        .catch(err => res.json(Response.error('命令执行失败', err)))
+        .then((stdout: string) => res.json(Response.ok(stdout)))
+        .catch((err: string) => res.json(Response.error('命令执行失败', err)))
 })
 
 router.get('/stream', (req, res) => {
