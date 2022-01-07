@@ -6,20 +6,24 @@
   "author": "AiJiangnan",
   "scripts": {
     "start": "node app.js",
-    "build": "pkg package.json"
+    "build": "./node_modules/.bin/webpack",
+    "win:pkg": "pkg --targets=node14.18.1-win-x64 ./build/app.js --output ./build/win/toolkit_server.exe"
   },
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ArtistOfCode/codeartist_toolkit_server"
+  },
   "dependencies": {
     "express": "^4.17.2",
     "express-ws": "^5.0.2",
     "multer": "^1.4.4",
     "mysql": "^2.18.1"
   },
-  "bin": "app.js",
-  "pkg": {
-    "targets": [
-      "node14.18.1-win-x64"
-    ],
-    "outputPath": "build"
+  "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-node-externals": "^3.0.0"
   }
 }
