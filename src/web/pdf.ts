@@ -1,13 +1,13 @@
-const express = require('express');
-const multer = require('multer')
-const EXE = require('../core/exe_driver');
-const path = require('path');
-const response = require('./response');
-const Parser = require('../util/Parser');
+import { Router } from 'express';
+import * as multer from 'multer';
+import EXE from '../core/exe_driver';
+import { join } from 'path';
+import response from './response';
+import Parser from '../util/Parser';
 
-const dest = path.join(process.cwd(), '/tmp');
-const router = express.Router();
-const upload = multer({ dest })
+const dest = join(process.cwd(), '/tmp');
+const router = Router();
+const upload = multer({ dest });
 
 router.post('/', upload.single('file'), (req, res) => {
     if (!req.file) {
@@ -15,7 +15,7 @@ router.post('/', upload.single('file'), (req, res) => {
         return;
     }
     const { filename, size } = req.file;
-    const pdf = path.join(dest, filename)
+    const pdf = join(dest, filename)
 
     EXE.pdf(`${pdf} dump_data`)
         .then(data => {
@@ -31,8 +31,8 @@ router.post('/merge', (req, res) => {
         res.json(response.badRequest('文件数量异常'));
     }
 
-    const args = pdfs.map(pdf => path.join(dest, pdf)).join(' ')
-    const mergeFilename = path.join(dest, (filename || Date.now()) + '.pdf')
+    const args = pdfs.map(pdf => join(dest, pdf)).join(' ')
+    const mergeFilename = join(dest, (filename || Date.now()) + '.pdf')
 
     EXE.pdf(`${args} output ${mergeFilename}`)
         .then(data => {
@@ -46,4 +46,4 @@ router.post('/merge', (req, res) => {
         .catch(err => res.json(response.error('PDF合并异常', err)))
 })
 
-module.exports = router;
+export default router;

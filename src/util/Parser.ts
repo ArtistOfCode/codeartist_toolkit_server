@@ -1,5 +1,5 @@
-const Parser = {
-    ini: (props, split) => {
+class Parser {
+    static ini(props, split) {
         if (!props) return;
         let res = {}
         const rows = props.split('\r\n');
@@ -14,4 +14,4 @@ const Parser = {
     }
 }
 
-module.exports = Parser;
+export default Parser;

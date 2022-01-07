@@ -1,11 +1,11 @@
-const express = require('express');
-const expressWs = require('express-ws');
-const cmd = require('./src/web/cmd');
-const mysql = require('./src/web/mysql');
-const pdf = require('./src/web/pdf');
+import * as express from 'express';
+import * as expressWs from 'express-ws';
+import cmd from './web/cmd';
+import mysql from './web/mysql';
+import pdf from './web/pdf';
 
-const app = express();
-expressWs(app);
+const appBase = express();
+const { app } = expressWs(appBase);
 
 // RequestBody
 app.use(express.json());
@@ -27,7 +27,6 @@ app.ws('/ws', (ws, req) => {
     ws.on('message', (msg) => {
         console.log(msg);
     });
-    console.log('socket', req.testing);
 });
 
 // API module

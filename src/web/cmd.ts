@@ -1,7 +1,7 @@
-const express = require('express');
-const CMD = require('../core/cmd_driver');
-const EXE = require('../core/exe_driver');
-const response = require('./response');
+import * as express from 'express';
+import CMD from '../core/cmd_driver';
+import EXE from '../core/exe_driver';
+import response from './response';
 
 const router = express.Router();
 
@@ -52,4 +52,4 @@ router.get('/stream', (req, res) => {
     })
 })
 
-module.exports = router;
+export default router;

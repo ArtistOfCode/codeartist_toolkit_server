@@ -1,7 +1,7 @@
-const { exec } = require('child_process');
+import { exec } from 'child_process';
 var iconv = require('iconv-lite');
 
-const decode = (res, encoding) => iconv.decode(Buffer.from(res, "binary"), encoding || 'GBK');
+const decode = (res: string, encoding?: string) => iconv.decode(Buffer.from(res, "binary"), encoding || 'GBK');
 
 const CMD = {
     exec: (command) => {
@@ -16,7 +16,7 @@ const CMD = {
             })
         })
     },
-    execStream: (command, cb, end, encoding) => {
+    execStream: (command, cb, end, encoding?) => {
         const { stdout } = exec(command, { encoding: "binary" });
         stdout.on('data', (data) => cb(decode(data, encoding)))
         stdout.on('end', end)
@@ -24,4 +24,4 @@ const CMD = {
     }
 }
 
-module.exports = CMD;
+export default CMD;

@@ -1,4 +1,4 @@
-const path = require('path');
+import * as path from 'path';
 const CMD = require('./cmd_driver');
 
 const app = {
@@ -7,8 +7,10 @@ const app = {
 
 const execute = (exe, args) => CMD.exec(path.join(process.cwd(), exe) + (args ? (' ' + args) : ''))
 
-const EXE = {
-    pdf: (args) => execute(app.pdf, args),
+class EXE {
+    static pdf(args) {
+        return execute(app.pdf, args)
+    }
 }
 
-module.exports = EXE;
+export default EXE;
