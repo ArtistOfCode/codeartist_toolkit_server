@@ -2,7 +2,7 @@ import * as express from 'express';
 import * as expressWs from 'express-ws';
 import cmd from './web/cmd';
 import ErrorRsp, { HttpStatus } from './web/error_resp';
-import router from './web/mysql';
+import client from './web/client';
 import pdf from './web/pdf';
 
 const appBase = express();
@@ -31,7 +31,7 @@ app.ws('/ws', (ws, req) => {
 });
 
 // API module
-app.use('/client', router);
+app.use('/client', client);
 app.use('/cmd', cmd);
 app.use('/pdf', pdf);
 

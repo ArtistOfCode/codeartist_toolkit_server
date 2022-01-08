@@ -1,7 +1,7 @@
 import * as mysql from 'mysql';
 import { Connection, ConnectionConfig } from 'mysql';
 
-class MySQL {
+class MySQL implements ClientDriver<ConnectionConfig> {
 
     private client: Connection = null;
 
@@ -25,7 +25,7 @@ class MySQL {
         })
     }
 
-    public end(): Promise<any> {
+    public end(): Promise<string> {
         if (this.client) {
             return new Promise((resolve, reject) => {
                 this.client.end(err => {
