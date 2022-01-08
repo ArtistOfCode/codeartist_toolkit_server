@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as multer from 'multer';
 import * as path from 'path';
-import Response from './response';
+import ErrorRsp, { HttpStatus } from './error_resp';
 import Parser from '../util/Parser';
 import EXE from '../core/exe_driver';
 
@@ -11,7 +11,7 @@ const upload = multer({ dest });
 
 router.post('/', upload.single('file'), (req, res) => {
     if (!req.file) {
-        res.json(Response.badRequest('文件不能为空'))
+        res.status(HttpStatus.BAD_REQUEST).json(ErrorRsp.of('文件不能为空'))
         return;
     }
     const { filename, size } = req.file;
@@ -20,15 +20,15 @@ router.post('/', upload.single('file'), (req, res) => {
     EXE.pdf(`${pdf} dump_data`)
         .then(data => {
             const result = Parser.ini(data, ': ')
-            res.json(Response.ok({ filename, size, pdf: result }))
+            res.json({ filename, size, pdf: result })
         })
-        .catch(err => res.json(Response.error(err)))
+        .catch(err => res.json(ErrorRsp.of(err)))
 })
 
 router.post('/merge', (req, res) => {
     const { filename, pdfs } = req.body;
     if (!pdfs || pdfs.length < 2) {
-        res.json(Response.badRequest('文件数量异常'));
+        res.status(HttpStatus.BAD_REQUEST).json(ErrorRsp.of('文件数量异常'));
     }
 
     const args = pdfs.map((pdf: string) => path.join(dest, pdf)).join(' ')
@@ -43,7 +43,8 @@ router.post('/merge', (req, res) => {
             //     // }
             // })
         })
-        .catch(err => res.json(Response.error('PDF合并异常', err)))
+        .catch(err => res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .json(ErrorRsp.of('PDF合并异常', err)))
 })
 
 export default router;

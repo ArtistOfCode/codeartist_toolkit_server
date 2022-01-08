@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as expressWs from 'express-ws';
 import cmd from './web/cmd';
+import ErrorRsp, { HttpStatus } from './web/error_resp';
 import router from './web/mysql';
 import pdf from './web/pdf';
 
@@ -37,7 +38,8 @@ app.use('/pdf', pdf);
 // Error handler
 app.use((err: any, req: any, res: any, next: any) => {
     console.error('global error handler:', err.stack);
-    res.json({ status: -1, msg: err.message });
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json(ErrorRsp.of(err.message, err));
 })
 
 app.listen(8888, () => console.log('码匠工具集服务端启动成功！\nURL: http://localhost:8888'));
