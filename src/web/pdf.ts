@@ -39,10 +39,11 @@ router.post('/merge', (req, res) => {
             pageArgs += `${label}${pdf.page} `;
         });
 
-    const mergeFilename = path.join(dest, (filename || Date.now()) + '.pdf')
+    const tmp: string = (filename || Date.now()) + '.pdf'
+    const mergeFilename = path.join(dest, tmp)
 
     EXE.pdf(`${file}cat ${pageArgs}output ${mergeFilename}`)
-        .then(data => { res.download(mergeFilename); })
+        .then(() => { res.json({ pdf: tmp }); })
         .catch(err => res.status(HttpStatus.INTERNAL_SERVER_ERROR)
             .json(ErrorRsp.of('PDF合并异常', err)))
 })

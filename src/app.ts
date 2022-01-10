@@ -4,6 +4,7 @@ import cmd from './web/cmd';
 import ErrorRsp, { HttpStatus } from './web/error_resp';
 import client from './web/client';
 import pdf from './web/pdf';
+import file from './web/file';
 
 const appBase = express();
 const { app } = expressWs(appBase);
@@ -34,6 +35,7 @@ app.ws('/ws', (ws, req) => {
 app.use('/client', client);
 app.use('/cmd', cmd);
 app.use('/pdf', pdf);
+app.use('/file', file);
 
 // Error handler
 app.use((err: any, req: any, res: any, next: any) => {
